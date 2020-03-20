@@ -45,7 +45,8 @@ class Interface:
         search_name = input("Please Enter a First Name: ")
         query = Contact.select().where(Contact.first_name ** f"%{search_name}%")
         if query.exists():
-            for contact in list(query):
+            query = list(query)
+            for contact in query:
                 print(f" Name: {contact.first_name} {contact.last_name}\n Number: {contact.phone_number}\n")
         else:
             cant_find = input("Sorry, we couldn't find that contact. Wan't to do another search? Y/N ")
