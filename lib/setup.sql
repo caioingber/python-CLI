@@ -1,1 +1,1 @@
-CREATE DATABASE 'contacts';
+CREATE DATABASE contacts;

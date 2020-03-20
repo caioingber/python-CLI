@@ -9,7 +9,7 @@ class BaseModel(Model):
         database = db
 
 class Contact(BaseModel):
-    contact_id = AutoField(primary_key=True)
+    # contact_id = AutoField(primary_key=True)
     first_name = CharField()
     last_name = CharField()
     phone_number = CharField()

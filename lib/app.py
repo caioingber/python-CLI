@@ -1,4 +1,4 @@
-from model import *
+from model import BaseModel, Contact
 
 class App:
     def __init__(self):
@@ -9,7 +9,8 @@ class App:
         (a) Look for a contact\n 
         (b) Add a new contact\n
         (c) Show all contacts\n
-        (d) Leave\n """)
+        (d) Delete Contact\n
+        (e) Leave \n""")
         if option == 'a':
             self.search()
         elif option == 'b':
@@ -17,6 +18,8 @@ class App:
         elif option == 'c':
             self.show_all()
         elif option == 'd':
+            self.delete()
+        elif option == 'e':
             quit()
         else:
             print("Invalid Input")
@@ -67,6 +70,37 @@ class App:
         number = input('Enter a Phone Number: ')
         Contact(first_name=first, last_name=second, phone_number=number).save()
         self.intro()
+    
+    def delete(self):
+        first = input("Enter a First Name: ")
+        second = input("Enter a Second Name: ")
+        person = Contact.get_or_none(Contact.first_name == first, Contact.last_name == second)
+        if person is None:
+            print("Sorry, contact does not exist")
+            self.home()
+        else:
+            print(f'Name: {person.first_name} {person.last_name}\nNumber: {person.phone_number}\nContact ID: {person.id}')
+            remove = int(input("Enter contact ID to remove from contact book: "))
+            query = Contact.get_or_none(Contact.id == remove)
+            if query is not None:
+                query.delete_instance()
+                print(f"{person.first_name} {person.last_name} has been deleted")
+                self.home()
+            else:
+                print("Sorry, contact does not exist")
+                self.home()
+            
+        # if person.exists():
+            
+            
+        # Contact.get_by_id(remove).delete_instance()
+        # print("Record deleted")
+        # self.home()
+        # print(query)
+        # if query.exist():
+        #     query.delete_instance()
+
+
 
 
 start = App()
