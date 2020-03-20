@@ -43,16 +43,16 @@ class Interface:
 
     def search(self):
         search_name = input("Please Enter a First Name: ")
-        query = Contact.get(Contact.first_name == search_name)
-        if query:
-            print(f" Name: {query.first_name} {query.last_name}\n Number: {query.phone_number}")
+        query = Contact.select().where(Contact.first_name ** f"%{search_name}%")
+        if query.exists():
+            for contact in list(query):
+                print(f" Name: {contact.first_name} {contact.last_name}\n Number: {contact.phone_number}\n")
         else:
             cant_find = input("Sorry, we couldn't find that contact. Wan't to do another search? Y/N ")
             if cant_find == 'Y':
                 self.search()
             else:
                 self.intro()
-
     
     def invalid(self):
         error = input('Invalid Input - Enter "home" to go back or "exit" to leave the application ')
@@ -62,6 +62,13 @@ class Interface:
             quit()
         else:
             self.invalid()
+
+    def create(self):
+        first = input('Enter a First Name: ')
+        second = input('Enter a Last Name: ')
+        number = input('Enter a Phone Number: ')
+        Contact(first_name=first, last_name=second, phone_number=number).save()
+        self.intro()
 
 
 
