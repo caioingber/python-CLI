@@ -1,9 +1,6 @@
-from model import BaseModel, Contact
+from model import *
 
 class App:
-    def __init__(self):
-        self.length = 0
-    
     def intro(self):
         option = input("""Welcome to the Contact Book. Choose from the following options: \n 
         (a) Look for a contact\n 
@@ -74,34 +71,22 @@ class App:
     def delete(self):
         first = input("Enter a First Name: ")
         second = input("Enter a Second Name: ")
-        person = Contact.get_or_none(Contact.first_name == first, Contact.last_name == second)
+        person = list(Contact.select().where(Contact.first_name == first, Contact.last_name == second))
         if person is None:
             print("Sorry, contact does not exist")
             self.home()
         else:
-            print(f'Name: {person.first_name} {person.last_name}\nNumber: {person.phone_number}\nContact ID: {person.id}')
+            for contact in person:
+                print(f'Name: {contact.first_name} {contact.last_name}\nNumber: {contact.phone_number}\nContact ID: {contact.id}')
             remove = int(input("Enter contact ID to remove from contact book: "))
             query = Contact.get_or_none(Contact.id == remove)
             if query is not None:
+                print(f"{query.first_name} {query.last_name} has been deleted")
                 query.delete_instance()
-                print(f"{person.first_name} {person.last_name} has been deleted")
                 self.home()
             else:
                 print("Sorry, contact does not exist")
                 self.home()
-            
-        # if person.exists():
-            
-            
-        # Contact.get_by_id(remove).delete_instance()
-        # print("Record deleted")
-        # self.home()
-        # print(query)
-        # if query.exist():
-        #     query.delete_instance()
-
-
-
 
 start = App()
 start.intro()
